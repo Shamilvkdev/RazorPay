@@ -6,9 +6,9 @@ const app = express();
 dotenv.config();
 
 // middlewares
-app.use(express>json());
+app.use(express.json());
 app.use(cors())
 
 // port listening
 const PORT = process.env.PORT || 7000;
-app.listen(port, () => console.log(`listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`listening on port ${PORT}`));
