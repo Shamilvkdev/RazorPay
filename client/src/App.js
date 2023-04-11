@@ -9,6 +9,44 @@ function App() {
     img:"https://bookbins.in/wp-content/uploads/2022/11/Looking-For-Alaska-John-Green-Buy-Online-Bookbins-1.png",
     price:350
   })
+
+  const initPayment = (data) => {
+		const options = {
+			key: "rzp_test_19SzG5mmUPEVPz",
+			amount: data.amount,
+			currency: data.currency,
+			name: book.name,
+			description: "Test Transaction",
+			image: book.img,
+			order_id: data.id,
+			handler: async (response) => {
+				try {
+					const verifyUrl = "http://localhost:7000/api/payment/verify";
+					const { data } = await axios.post(verifyUrl, response);
+					console.log(data);
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			theme: {
+				color: "#3399cc",
+			},
+		};
+		const rzp1 = new window.Razorpay(options);
+		rzp1.open();
+	};
+
+  const handlePayment = async () => {
+    try {
+      const orderUrl ="http://localhost:7000/api/payment/orders"
+      const { data } = await axios.post(orderUrl, { amount: book.price })
+      console.log(data);
+      initPayment(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="App">
       <div className="book_container">
@@ -18,7 +56,7 @@ function App() {
           <p className="book_price">
             Price : <span>&#x20B9; {book.price}</span>
           </p>
-          <button className="buy_btn">
+          <button onClick={handlePayment} className="buy_btn">
             Buy Now
           </button>
       </div>
