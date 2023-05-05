@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Razorpay = require("razorpay")
 const crypto = require("crypto");
 
-//order creation
+//order creation of the products.
 router.post("/orders", async (req, res) => {
     try {
         const instance = new Razorpay({
